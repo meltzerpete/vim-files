@@ -34,27 +34,6 @@ filetype plugin indent on    " required
 " REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
 syntax on
 
-" IMPORTANT: win32 users will need to have 'shellslash' set so that latex
-" can be called correctly.
-set shellslash
-
-
-" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
-" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
-" The following changes the default filetype back to 'tex':
-let g:tex_flavor='latex'
-
-let g:Tex_UseMakefile = 0
-
-let g:Tex_DefaultTargetFormat='pdf'
-let g:Tex_CompileRule_pdf = 'pdflatex -shell-escape -synctex=1 -src-specials -interaction=nonstopmode $*'
-let g:Tex_ViewRule_pdf = 'okular --unique'
-function! SyncTexForward()
-	let s:syncfile = fnamemodify(fnameescape(Tex_GetMainFileName()), ":r").".pdf"
-	let execstr = "silent !okular --unique".s:syncfile."\\#src:".line(".").expand("%\:p").' &'
-	exec execstr
-endfunction
-nnoremap <Leader>f :call SyncTexForward()<CR>
 
 " searching
 set ignorecase smartcase hls incsearch
@@ -68,12 +47,11 @@ set spelllang=en_gb spell
 set spellfile=/home/pete/Dropbox/vim/spell/en.utf-8.add
 set nospell
 nnoremap <F3> :set spell! spell?<CR>
+inoremap <F3> :set spell! spell?<CR>
 
 " paste mode
 nnoremap <F2> :set paste! paste?<CR>
-
-" date underlined (notes)
-nnoremap <F5> :put =strftime('%d/%m/%Y')<CR>:put ='=========='<CR>:put =''<CR>:put =''<CR>
+inoremap <F2> :set paste! paste?<CR>
 
 " auto complete
 imap <TAB> <C-N>
@@ -82,10 +60,10 @@ imap <S-TAB> <C-X><C-F>
 
 " VIM + TMUX
 " vim splits
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+nnoremap j <C-W><C-J>
+nnoremap k <C-W><C-K>
+nnoremap l <C-W><C-L>
+nnoremap h <C-W><C-H>
 
 set splitbelow
 set splitright
@@ -93,7 +71,7 @@ set splitright
 nnoremap <F12> :vsplit ~/.vimrc<CR>
 
 " autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'tex']
 let g:markdown_syntax_conceal = 0
 let g:markdown_minlines = 100
 

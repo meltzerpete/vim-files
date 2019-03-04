@@ -23,3 +23,4 @@ xnoremap <leader>lc :'<,'>:w !pandoc -o %:r.pdf<CR><CR>
 nnoremap <F5> :put =strftime('# %d/%m/%Y ')<CR>A
 inoremap <F5> <ESC>:put =strftime('# %d/%m/%Y ')<CR>A
 
+inoremap  ```tex<CR><CR>```<ESC>ki

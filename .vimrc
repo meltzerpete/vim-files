@@ -13,7 +13,9 @@ Plugin 'VundleVim/Vundle.vim'
 " Plugin 'tmhedberg/SimpylFold'
 Plugin 'godlygeek/tabular'
 Plugin 'tpope/vim-markdown'
+Plugin 'mzlogin/vim-markdown-toc'
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'tpope/vim-fugitive'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -47,16 +49,17 @@ set spelllang=en_gb spell
 set spellfile=/home/pete/Dropbox/vim/spell/en.utf-8.add
 set nospell
 nnoremap <F3> :set spell! spell?<CR>
-inoremap <F3> :set spell! spell?<CR>
+inoremap <F3> <ESC>:set spell! spell?<CR>a
 
 " paste mode
 nnoremap <F2> :set paste! paste?<CR>
-inoremap <F2> :set paste! paste?<CR>
+inoremap <F2> <ESC>:set paste! paste?<CR>a
 
-" auto complete
-imap <TAB> <C-N>
+" auto complete:
+" - word in file
+"imap <TAB> <C-N>
+" - file path
 imap <S-TAB> <C-X><C-F>
-
 
 " VIM + TMUX
 " vim splits
@@ -71,7 +74,10 @@ set splitright
 nnoremap <F12> :vsplit ~/.vimrc<CR>
 
 " autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'tex']
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'tex', 'sql']
 let g:markdown_syntax_conceal = 0
 let g:markdown_minlines = 100
+
+command CDC cd %:p:h
+nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 

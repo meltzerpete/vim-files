@@ -14,6 +14,7 @@ set shellslash
 let g:tex_flavor='latex'
 
 let g:Tex_UseMakefile = 0
+let g:Tex_GotoError = 0
 
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_CompileRule_pdf = 'pdflatex -shell-escape -synctex=1 -src-specials -interaction=nonstopmode $*'
@@ -25,3 +26,18 @@ function! SyncTexForward()
 endfunction
 nnoremap <Leader>f :call SyncTexForward()<CR>
 
+function! Compile()
+  let s:mainFile = fnamemodify(fnameescape(Tex_GetMainFileName()), ":r")
+  let execstr = "!pdflatex -shell-escape -synctex=1 -src-specials -interaction=nonstopmode ".s:mainFile.".tex"
+  exec execstr
+endfunction
+
+function! Bib()
+  let s:mainFile = fnamemodify(fnameescape(Tex_GetMainFileName()), ":r")
+  let execstr = "!bibtex ".s:mainFile
+  exec execstr
+endfunction
+
+" <F5> compile, <F6> compile with bib
+nnoremap [15~ :w<CR>:call Compile()<CR>
+nnoremap [17~ :w<CR>:call Compile()<CR> :call Bib()<CR> :call Compile()<CR> :call Compile()<CR>

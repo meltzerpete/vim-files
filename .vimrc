@@ -16,6 +16,8 @@ Plugin 'tpope/vim-markdown'
 Plugin 'mzlogin/vim-markdown-toc'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tpope/vim-fugitive'
+" for viewing open buffers
+Plugin 'vim-airline/vim-airline'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -81,3 +83,11 @@ let g:markdown_minlines = 100
 command CDC cd %:p:h
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 
+
+" VIM-AIRLINE
+
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+
+" Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'

@@ -33,8 +33,9 @@ function! Compile()
 endfunction
 
 function! Bib()
-  let s:mainFile = fnamemodify(fnameescape(Tex_GetMainFileName()), ":r")
+  let s:mainFile = fnamemodify(fnamemodify(fnameescape(Tex_GetMainFileName()), ":."), ":r")
   let execstr = "!bibtex ".s:mainFile
+  echom execstr
   exec execstr
 endfunction
 

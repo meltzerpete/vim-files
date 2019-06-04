@@ -15,6 +15,8 @@
 "   lo     compile full file/selection and open output pdf
 "   lc     compile full file/selection
 "
+"   <SPACE>  jumpy to last diary entry and unfold with todos
+"
 " Functions:
 "
 "   Comp(REGEX)         concat and compile all entries with headings matching
@@ -24,6 +26,9 @@
 "
 "   CompoHTML(REGEX)    concat and compile all entries with headings matching
 "                       REGEX to html, and open in browser
+"
+" Extra:
+"   sets position for diary.md
 "
 
 nnoremap [24;5~ :vsplit ~/.vim/ftplugin/markdown.vim<CR>
@@ -59,6 +64,8 @@ function! Comp(regex)
         echom system("~/Dropbox/notes/extractor.sh -v -c -r '" . a:regex . "' " . bufname("%"))
 endfunction
 
+nnoremap [15;2~ :!xdg-open out.pdf &> /dev/null<CR><CR>
+
 function! Compo(regex)
 	echom a:regex
         echom system("~/Dropbox/notes/extractor.sh -r '" . a:regex . "' " . bufname("%"))
@@ -75,9 +82,12 @@ xnoremap <leader>lo :'<,'>:w !pandoc -o %:r.pdf<CR>:!xdg-open %:r.pdf &> /dev/nu
 nnoremap <leader>lc :w !pandoc -o %:r.pdf<CR><CR>
 xnoremap <leader>lc :'<,'>:w !pandoc -o %:r.pdf<CR><CR>
 
-" # date (notes)
+" # date (diary)
 nnoremap <F4> :put =strftime('# %d/%m/%Y ')<CR>A
 inoremap <F4> <ESC>:put =strftime('# %d/%m/%Y ')<CR>A
+
+" jump to last entry and unfold with todos (diary)
+nnoremap <leader><SPACE> Gzo{{zo}}{{
 
 
 " some markdown shortcuts
@@ -92,4 +102,17 @@ inoremap <C-P> ![<+caption+>](<+path+>)<ESC>5bi
 
 " alternate folding with space bar
 nnoremap <SPACE> za
+
+
+" Fix bug in markdown folding for # inside code block
+fun! SyntaxFix()
+	setlocal foldmethod=syntax
+	syn region mkdHeaderFold
+	      \ start="^\s*\z(#\+\)"
+	      \ skip="^\s*\z1#\+"
+	      \ end="^\(\s*#\)\@="
+	      \ fold contains=TOP
+endfun
+
+autocmd FileType markdown call SyntaxFix()
 

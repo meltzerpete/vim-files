@@ -28,7 +28,7 @@
 "                       REGEX to html, and open in browser
 "
 " Extra:
-"   sets position for diary.md
+"   fixes syntax/folding bug with `#` inside code blocks
 "
 
 nnoremap [24;5~ :vsplit ~/.vim/ftplugin/markdown.vim<CR>

@@ -61,7 +61,7 @@ autocmd BufRead,BufNewFile,BufEnter *.md,*.markdown call MathAndLiquid()
 
 function! Comp(regex)
 	echom a:regex
-        echom system("~/Dropbox/notes/extractor.sh -v -c -r '" . a:regex . "' " . bufname("%"))
+        echom system("~/Dropbox/notes/extractor.sh -c -r '" . a:regex . "' " . bufname("%"))
 endfunction
 
 nnoremap [15;2~ :!xdg-open out.pdf &> /dev/null<CR><CR>
@@ -71,9 +71,19 @@ function! Compo(regex)
         echom system("~/Dropbox/notes/extractor.sh -r '" . a:regex . "' " . bufname("%"))
 endfunction
 
-function! CompoHTML(regex)
+function! CompHTML(regex)
 	echom a:regex
-        echom system("~/Dropbox/notes/extractor-html.sh -r '" . a:regex . "' " . bufname("%"))
+	let chrome_window=system("xdotool search --name out.html")[:-2]
+	if chrome_window
+		echom chrome_window
+        	echom system("~/Dropbox/notes/extractor-html.sh -c -r '" . a:regex . "' " . bufname("%"))
+		let diary_window=system("xdotool getactivewindow")
+		exec system("xdotool windowactivate --sync ".chrome_window)
+		exec system("xdotool key F5")
+		exec system("xdotool windowactivate ".diary_window)
+	else
+        	echom system("~/Dropbox/notes/extractor-html.sh -r '" . a:regex . "' " . bufname("%"))
+	endif
 endfunction
 
 nnoremap <leader>lo :w !pandoc -o %:r.pdf<CR>:!xdg-open %:r.pdf &> /dev/null<CR><CR>
@@ -87,7 +97,7 @@ nnoremap <F4> :put =strftime('# %d/%m/%Y ')<CR>A
 inoremap <F4> <ESC>:put =strftime('# %d/%m/%Y ')<CR>A
 
 " jump to last entry and unfold with todos (diary)
-nnoremap <leader><SPACE> Gzo{{zo}}{{
+nnoremap <leader><SPACE> GzO{kkzOG{{
 
 
 " some markdown shortcuts
@@ -101,7 +111,7 @@ inoremap  ```tex<CR>\begin{center}<CR>\includegraphics[]{}<CR>\end{center}<CR>`
 inoremap <C-P> ![<+caption+>](<+path+>)<ESC>5bi
 
 " alternate folding with space bar
-nnoremap <SPACE> za
+nnoremap <SPACE> zA
 
 
 " Fix bug in markdown folding for # inside code block

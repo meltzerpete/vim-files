@@ -11,6 +11,8 @@
 " <SPACE>  alternate current fold
 "
 " <LEADER>:
+"
+"   o      open out.pdf (for diary)
 "   
 "   lo     compile full file/selection and open output pdf
 "   lc     compile full file/selection
@@ -29,11 +31,15 @@
 "
 " Extra:
 "   fixes syntax/folding bug with `#` inside code blocks
+"   keep tabs as tabs with display width 2 spaces
 "
 
 nnoremap [24;5~ :vsplit ~/.vim/ftplugin/markdown.vim<CR>
 let g:markdown_folding = 0
 set foldlevel=0
+
+
+"" MATH SYNTAX HIGHLIGHTING
 
 function! MathAndLiquid()
     "" Define certain regions
@@ -59,12 +65,13 @@ endfunction
 " Call everytime we open a Markdown file
 autocmd BufRead,BufNewFile,BufEnter *.md,*.markdown call MathAndLiquid()
 
+
+"" DIARY COMPILATION / TRANSLATION
+
 function! Comp(regex)
 	echom a:regex
         echom system("~/Dropbox/notes/extractor.sh -c -r '" . a:regex . "' " . bufname("%"))
 endfunction
-
-nnoremap [15;2~ :!xdg-open out.pdf &> /dev/null<CR><CR>
 
 function! Compo(regex)
 	echom a:regex
@@ -86,21 +93,16 @@ function! CompHTML(regex)
 	endif
 endfunction
 
-nnoremap <leader>lo :w !pandoc -o %:r.pdf<CR>:!xdg-open %:r.pdf &> /dev/null<CR><CR>
-xnoremap <leader>lo :'<,'>:w !pandoc -o %:r.pdf<CR>:!xdg-open %:r.pdf &> /dev/null<CR><CR>
 
-nnoremap <leader>lc :w !pandoc -o %:r.pdf<CR><CR>
-xnoremap <leader>lc :'<,'>:w !pandoc -o %:r.pdf<CR><CR>
+"" DIARY UTILS
 
-" # date (diary)
+" # new entry
 nnoremap <F4> :put =strftime('# %d/%m/%Y ')<CR>A
 inoremap <F4> <ESC>:put =strftime('# %d/%m/%Y ')<CR>A
 
 " jump to last entry and unfold with todos (diary)
 nnoremap <leader><SPACE> GzO{kkzOG{{
 
-
-" some markdown shortcuts
 " include tex (to be compiled)
 inoremap  ```tex<CR><CR>```<ESC>ki
 " link
@@ -110,9 +112,24 @@ inoremap  ```tex<CR>\begin{center}<CR>\includegraphics[]{}<CR>\end{center}<CR>`
 " image (markdown)
 inoremap <C-P> ![<+caption+>](<+path+>)<ESC>5bi
 
+" open out.pdf
+nnoremap <leader>o :!xdg-open out.pdf &> /dev/null<CR><CR>
+
+
+"" GENERAL MD TO PDF
+
+nnoremap <leader>lo :w !pandoc -o %:r.pdf<CR>:!xdg-open %:r.pdf &> /dev/null<CR><CR>
+xnoremap <leader>lo :'<,'>:w !pandoc -o %:r.pdf<CR>:!xdg-open %:r.pdf &> /dev/null<CR><CR>
+
+nnoremap <leader>lc :w !pandoc -o %:r.pdf<CR><CR>
+xnoremap <leader>lc :'<,'>:w !pandoc -o %:r.pdf<CR><CR>
+
+
 " alternate folding with space bar
 nnoremap <SPACE> zA
 
+
+"" EXTRAS
 
 " Fix bug in markdown folding for # inside code block
 fun! SyntaxFix()
@@ -125,4 +142,14 @@ fun! SyntaxFix()
 endfun
 
 autocmd FileType markdown call SyntaxFix()
+
+" TABs
+filetype plugin indent on
+" show existing tab with 2 spaces width
+set tabstop=4
+" when indenting with '>', use 2 spaces width
+set shiftwidth=4
+" On pressing tab, insert 4 spaces
+set expandtab
+set smartindent
 

@@ -30,8 +30,12 @@
 "                       REGEX to html, and open in browser
 "
 " Extra:
-"   fixes syntax/folding bug with `#` inside code blocks
-"   keep tabs as tabs with display width 2 spaces
+"
+"  - fixes syntax/folding bug with `#` inside code blocks
+"
+"  - keep tabs as tabs with display width 2 spaces
+"  
+"  - keeps cursor in middle of the screen (scrolloff=20)
 "
 
 nnoremap [24;5~ :vsplit ~/.vim/ftplugin/markdown.vim<CR>
@@ -70,7 +74,7 @@ autocmd BufRead,BufNewFile,BufEnter *.md,*.markdown call MathAndLiquid()
 
 function! Comp(regex)
 	echom a:regex
-        echom system("~/Dropbox/notes/extractor.sh -c -r '" . a:regex . "' " . bufname("%"))
+        echom system("~/Dropbox/notes/extractor.sh -c -v -r '" . a:regex . "' " . bufname("%"))
 endfunction
 
 function! Compo(regex)
@@ -152,4 +156,7 @@ set shiftwidth=4
 " On pressing tab, insert 4 spaces
 set expandtab
 set smartindent
+
+" Keep cursor in middle of the screen
+set scrolloff=20
 

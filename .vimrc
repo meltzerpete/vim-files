@@ -1,3 +1,31 @@
+" Navigate panes
+"
+"   ALT+H/J/K/L
+"
+" Yank to system clipboard
+"
+"   <C-Y>
+"
+" Autocomplete file path
+"
+"   <S-TAB>
+" 
+" Toggle paste mode
+"
+"   <F2>
+"
+" Toggle spell check
+"
+"   <F3>
+"
+" Clear search
+"
+"   <F7>
+"  
+" cd to directory of current file
+"
+"   :CDC
+
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -91,3 +119,16 @@ let g:airline#extensions#tabline#enabled = 1
 
 " Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
+
+" FZF
+set rtp+=~/.fzf
+
+" prevent vim clearing system clipbard on exit
+autocmd VimLeave * call system("xsel -ib", getreg('+'))
+
+vnoremap <C-Y> "+y
+nnoremap <C-Y> "+y
+
+" cursor
+autocmd VimEnter * silent exec "! echo -ne '\e[1 q'"
+autocmd VimLeave * silent exec "! echo -ne '\e[5 q'"

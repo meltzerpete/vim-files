@@ -1,5 +1,8 @@
 nnoremap [24;5~ :vsplit ~/.vim/ftplugin/tex.vim<CR>
 
+" line wraps (reformat with gq on selection)
+set textwidth=80
+
 " Enable ALT key macros (VimLatex)
 let g:Tex_AdvancedMath = 1
 set winaltkeys=no
@@ -28,7 +31,7 @@ nnoremap <Leader>f :call SyncTexForward()<CR>
 
 function! Compile()
   let s:mainFile = fnamemodify(fnameescape(Tex_GetMainFileName()), ":r")
-  let execstr = "!pdflatex -shell-escape -synctex=1 -src-specials -interaction=nonstopmode ".s:mainFile.".tex"
+  let execstr = "!xelatex -shell-escape -synctex=1 -src-specials -interaction=nonstopmode ".s:mainFile.".tex"
   exec execstr
 endfunction
 

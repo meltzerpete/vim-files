@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # create symbolic links
-ln -s -t ~ .vimrc
-ln -s -t ~ .vim
+dir=`pwd`
+cd ~
+ln -s ${dir}/.vim
+ln -s ${dir}/.vimrc
 
